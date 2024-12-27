@@ -183,6 +183,17 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.insert(TABLE_PARTICIPANTS, null, values)
     }
 
+    //Insertar deuda
+    fun insertDebt(creditor: String, debtor: String, amount: Double): Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COL_DEBT_CREDITOR, creditor)
+        values.put(COL_DEBT_DEBTOR, debtor)
+        values.put(COL_DEBT_AMOUNT, amount)
+
+        return db.insert(TABLE_DEBTS, null, values)
+    }
+
     // Obtener participantes por grupo
     fun getParticipantsByGroup(groupId: Int): Cursor {
         val db = this.readableDatabase
@@ -219,5 +230,64 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val values = ContentValues()
         values.put(COL_GROUP_NAME, nuevoNombre)
         return db.update(TABLE_GROUPS, values, "$COL_GROUP_ID = ?", arrayOf(id.toString()))
+    }
+
+    //Deudas por acreedor
+    fun getDebtsByCreditor(creditor: String): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery(
+            "SELECT * FROM $TABLE_DEBTS WHERE $COL_DEBT_CREDITOR = ?",
+            arrayOf(creditor)
+        )
+    }
+
+    //Deudas por deudor
+    fun getDebtsByDebtor(debtor: String): Cursor {
+        val db = this.readableDatabase
+
+        return db.rawQuery(
+            "SELECT * FROM $TABLE_DEBTS WHERE $COL_DEBT_DEBTOR = ?",
+            arrayOf(debtor)
+        )
+    }
+
+    //Actualizar deuda
+    fun updateDebt(id: Int, nuevoCredor: String, nuevoDeudor: String, nuevoMonto: Double): Int {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COL_DEBT_CREDITOR, nuevoCredor)
+        values.put(COL_DEBT_DEBTOR, nuevoDeudor)
+
+        return db.update(TABLE_DEBTS, values, "$COL_DEBT_ID = ?", arrayOf(id.toString()))
+    }
+
+    //Eliminar deuda
+    fun deleteDebt(id: Int): Int {
+        val db = this.writableDatabase
+        return db.delete(TABLE_DEBTS, "$COL_DEBT_ID = ?", arrayOf(id.toString()))
+    }
+
+    //Obtener deuda por ID
+    fun getDebtById(id: Int): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery(
+            "SELECT * FROM $TABLE_DEBTS WHERE $COL_DEBT_ID = ?",
+            arrayOf(id.toString()))
+    }
+
+    //Obtener total de deudas por miembros de un grupo
+    fun getTotalDebtForGroup(groupId: Int): Double {
+        val db = this.readableDatabase
+        val cursor =  db.rawQuery(
+                "SELECT SUM($COL_DEBT_AMOUNT) FROM $TABLE_DEBTS WHERE $COL_DEBT_CREDITOR IN (SELECT $COL_PARTICIPANT_NAME FROM $TABLE_PARTICIPANTS WHERE $COL_PARTICIPANT_GROUP_ID = ?)",
+                arrayOf(groupId.toString())
+        )
+
+        var totalCredit = 0.0
+        if (cursor.moveToFirst()) {
+            totalCredit = cursor.getDouble(0)
+        }
+        cursor.close()
+        return totalCredit
     }
 }
