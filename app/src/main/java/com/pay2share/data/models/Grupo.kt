@@ -1,4 +1,6 @@
 package com.pay2share.data.models
 
-class Grupo {
-}
+data class Group(
+    val id: Int,
+    val name: String
+)

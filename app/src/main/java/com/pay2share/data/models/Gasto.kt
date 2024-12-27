@@ -1,4 +1,10 @@
 package com.pay2share.data.models
 
-class Gasto {
-}
+data class Expense(
+    val id: Int,
+    val name: String,
+    val amount: Double,
+    val date: String,
+    val payer: String,
+    val groupId: Int
+)

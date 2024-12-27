@@ -18,7 +18,7 @@ class GrupoRepository(private val dbHelper: DatabaseHelper) {
     }
 
     fun obtenerParticipantesPorGrupo(groupId: Int): Cursor {
-        return dbHelper.getParticipantsByGroup(groupId)
+        return dbHelper.getUsersByGroup(groupId)
     }
 
     fun actualizarGrupo(id: Int, nuevoNombre: String): Int {
