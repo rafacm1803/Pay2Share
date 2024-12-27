@@ -197,4 +197,27 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.writableDatabase
         return db.delete(TABLE_EXPENSES, "$COL_EXPENSE_ID = ?", arrayOf(id.toString()))
     }
+
+    // Eliminar grupo
+    fun deleteGroup(id: Int): Int {
+        val db = this.writableDatabase
+        return db.delete(TABLE_GROUPS, "$COL_GROUP_ID = ?", arrayOf(id.toString()))
+    }
+
+    //Obtener grupo por ID
+    fun getGroupById(id: Int): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery(
+            "SELECT * FROM $TABLE_GROUPS WHERE $COL_GROUP_ID = ?",
+            arrayOf(id.toString())
+        )
+    }
+
+    //Actualizar grupo
+    fun updateGroup(id: Int, nuevoNombre: String): Int {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COL_GROUP_NAME, nuevoNombre)
+        return db.update(TABLE_GROUPS, values, "$COL_GROUP_ID = ?", arrayOf(id.toString()))
+    }
 }
