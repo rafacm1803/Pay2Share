@@ -1,6 +1,7 @@
 package com.pay2share.ui.group
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pay2share.databinding.ActivityGroupDetailBinding
 import com.pay2share.database.DatabaseHelper
@@ -42,6 +43,19 @@ class GroupDetailActivity : AppCompatActivity() {
 
             val totalDebt = grupoRepository.obtenerTotalDeudaPorGrupo(groupId)
             binding.textTotalDebt.text = totalDebt.toString()
+        }
+
+        binding.buttonAddUser.setOnClickListener {
+            val email = binding.editTextEmail.text.toString()
+            val userCursor = usuarioRepository.obtenerUsuarioPorEmail(email)
+            if (userCursor != null && userCursor.moveToFirst()) {
+                val userId = userCursor.getInt(userCursor.getColumnIndexOrThrow("id"))
+                usuarioRepository.anyadirUsuarioAGrupo(userId, groupId)
+                Toast.makeText(this, "User added to group", Toast.LENGTH_SHORT).show()
+                userCursor.close()
+            } else {
+                Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
