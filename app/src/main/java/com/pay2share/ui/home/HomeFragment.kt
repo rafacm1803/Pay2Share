@@ -1,5 +1,6 @@
 package com.pay2share.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.pay2share.databinding.FragmentHomeBinding
 import com.pay2share.database.DatabaseHelper
-import com.pay2share.data.database.UsuarioRepository
 import com.pay2share.data.database.GrupoRepository
+import com.pay2share.data.database.UsuarioRepository
 
 class HomeFragment : Fragment() {
 
@@ -36,14 +37,18 @@ class HomeFragment : Fragment() {
             textView.text = grupos.joinToString("\n")
         }
 
-        // Suponiendo que el ID del usuario es 1
-        homeViewModel.cargarGrupos(1)
+        // Obtener el ID del usuario de la sesión
+        val sharedPreferences = requireContext().getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", -1)
+
+        homeViewModel.cargarGrupos(userId)
 
         val buttonAddGroup: Button = binding.buttonAddGroup
         buttonAddGroup.setOnClickListener {
-            // Añadir un grupo para el usuario con ID 1
-            grupoRepository.crearGrupo("Nuevo Grupo")
-            homeViewModel.cargarGrupos(1) // Recargar los grupos
+            // Añadir un grupo y relacionarlo con el usuario de la sesión
+            val groupId = grupoRepository.crearGrupo("Nuevo Grupo")
+            usuarioRepository.anyadirUsuarioAGrupo(userId, groupId.toInt())
+            homeViewModel.cargarGrupos(userId) // Recargar los grupos
         }
 
         return root
