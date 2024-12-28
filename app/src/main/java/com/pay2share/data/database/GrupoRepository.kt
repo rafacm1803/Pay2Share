@@ -28,4 +28,8 @@ class GrupoRepository(private val dbHelper: DatabaseHelper) {
     fun eliminarGrupo(id: Int): Int {
         return dbHelper.deleteGroup(id)
     }
+
+    fun obtenerTotalDeudaPorGrupo(groupId: Int): Double {
+        return dbHelper.getTotalDebtForGroup(groupId)
+    }
 }

@@ -1,4 +1,3 @@
-// filepath: /c:/Users/rafac/Desktop/UNI/EMPOTRADOS/Pay2Share/code/app/src/main/java/com/pay2share/ui/home/HomeFragment.kt
 package com.pay2share.ui.home
 
 import android.content.Context
@@ -7,15 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.pay2share.databinding.FragmentHomeBinding
 import com.pay2share.database.DatabaseHelper
 import com.pay2share.data.database.GrupoRepository
 import com.pay2share.data.database.UsuarioRepository
-import com.pay2share.ui.group.CreateGroupActivity
+import com.pay2share.ui.group.GroupDetailActivity
 
 class HomeFragment : Fragment() {
 
@@ -35,9 +35,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val listView: ListView = binding.listViewGroups
         homeViewModel.grupos.observe(viewLifecycleOwner) { grupos ->
-            textView.text = grupos.joinToString("\n")
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, grupos.map { it.name })
+            listView.adapter = adapter
         }
 
         // Obtener el ID del usuario de la sesión
@@ -45,6 +46,13 @@ class HomeFragment : Fragment() {
         val userId = sharedPreferences.getInt("user_id", -1)
 
         homeViewModel.cargarGrupos(userId)
+
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val groupId = homeViewModel.grupos.value?.get(position)?.id ?: return@OnItemClickListener
+            val intent = Intent(requireContext(), GroupDetailActivity::class.java)
+            intent.putExtra("GROUP_ID", groupId)
+            startActivity(intent)
+        }
 
         return root
     }

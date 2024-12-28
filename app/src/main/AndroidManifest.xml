@@ -41,6 +41,12 @@
             android:theme="@style/Theme.Pay2Share.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".ui.group.GroupDetailActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Pay2Share.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>
