@@ -47,6 +47,13 @@
             android:theme="@style/Theme.Pay2Share.NoActionBar">
         </activity>
 
+        <!-- Agregar la declaración de UserDetailActivity -->
+        <activity
+            android:name=".ui.group.UserDetailActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Pay2Share.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

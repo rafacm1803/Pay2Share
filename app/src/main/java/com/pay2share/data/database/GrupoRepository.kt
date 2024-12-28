@@ -1,12 +1,13 @@
 package com.pay2share.data.database
 
+import android.content.ContentValues
 import android.database.Cursor
 import com.pay2share.database.DatabaseHelper
 
 class GrupoRepository(private val dbHelper: DatabaseHelper) {
 
-    fun crearGrupo(nombre: String): Long {
-        return dbHelper.insertGroup(nombre)
+    fun crearGrupo(nombre: String, creadorId: Int): Long {
+        return dbHelper.insertGroup(nombre, creadorId)
     }
 
     fun obtenerTodosLosGrupos(): Cursor {
@@ -31,5 +32,17 @@ class GrupoRepository(private val dbHelper: DatabaseHelper) {
 
     fun obtenerTotalDeudaPorGrupo(groupId: Int): Double {
         return dbHelper.getTotalDebtForGroup(groupId)
+    }
+
+    fun asignarDeudaAGrupo(userId: Int, groupId: Int, debtAmount: Double) {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put("debt", debtAmount)
+        }
+        db.update(DatabaseHelper.TABLE_USER_GROUPS, values, "user_id = ? AND group_id = ?", arrayOf(userId.toString(), groupId.toString()))
+    }
+
+    fun obtenerDeudaPorUsuarioYGrupo(userId: Int, groupId: Int): Double {
+        return dbHelper.obtenerDeudaPorUsuarioYGrupo(userId, groupId)
     }
 }

@@ -33,7 +33,7 @@ class UsuarioRepository (private val dbHelper: DatabaseHelper){
     }
 
     fun obtenerGruposDeUsuario(usuarioId: Int): Cursor {
-        return dbHelper.getGroupsOfUser(usuarioId)
+        return dbHelper.obtenerGruposDeUsuario(usuarioId)
     }
 
     fun obtenerTodosLosUsuarios(): Cursor {

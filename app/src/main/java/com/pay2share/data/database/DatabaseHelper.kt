@@ -11,7 +11,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "Pay2Share.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 4
 
         // Tablas
         const val TABLE_GROUPS = "groups"
@@ -23,6 +23,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         // Columnas - Groups
         const val COL_GROUP_ID = "id"
         const val COL_GROUP_NAME = "name"
+        const val COL_GROUP_CREATOR_ID = "creator_id"
 
         // Columnas - Expenses
         const val COL_EXPENSE_ID = "id"
@@ -46,6 +47,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         // Columnas - User Groups
         const val COL_USER_GROUP_USER_ID = "user_id"
         const val COL_USER_GROUP_GROUP_ID = "group_id"
+        const val COL_USER_GROUP_DEBT = "debt"
     }
 
 
@@ -55,7 +57,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val createGroupsTable = """
             CREATE TABLE $TABLE_GROUPS (
                 $COL_GROUP_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $COL_GROUP_NAME TEXT NOT NULL
+                $COL_GROUP_NAME TEXT NOT NULL,
+                $COL_GROUP_CREATOR_ID INTEGER NOT NULL
             )
         """.trimIndent()
 
@@ -95,6 +98,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             CREATE TABLE $TABLE_USER_GROUPS (
                 $COL_USER_GROUP_USER_ID INTEGER,
                 $COL_USER_GROUP_GROUP_ID INTEGER,
+                $COL_USER_GROUP_DEBT REAL DEFAULT 0,
                 PRIMARY KEY ($COL_USER_GROUP_USER_ID, $COL_USER_GROUP_GROUP_ID),
                 FOREIGN KEY($COL_USER_GROUP_USER_ID) REFERENCES $TABLE_USERS($COL_USER_ID),
                 FOREIGN KEY($COL_USER_GROUP_GROUP_ID) REFERENCES $TABLE_GROUPS($COL_GROUP_ID)
@@ -108,12 +112,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL(createUserGroupsTable)
     }
 
+
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        // Borramos las viejas tablas
         db.execSQL("DROP TABLE IF EXISTS $TABLE_GROUPS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_EXPENSES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_DEBTS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER_GROUPS")
+
+        // Recreamos las tables
         onCreate(db)
     }
 
@@ -148,10 +156,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     // Insertar grupo
-    fun insertGroup(name: String): Long {
+    fun insertGroup(name: String, creatorId: Int): Long {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COL_GROUP_NAME, name)
+        values.put(COL_GROUP_CREATOR_ID, creatorId)
 
         return db.insert(TABLE_GROUPS, null, values)
     }
@@ -162,7 +171,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.rawQuery("SELECT * FROM $TABLE_GROUPS", null)
     }
 
-    // Obtener todos los 
+    // Obtener todos los
     fun getAllUsers(): Cursor {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM $TABLE_USERS", null)
@@ -362,12 +371,29 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.delete(TABLE_USER_GROUPS, "$COL_USER_GROUP_USER_ID = ? AND $COL_USER_GROUP_GROUP_ID = ?", arrayOf(userId.toString(), groupId.toString()))
     }
 
-    fun getGroupsOfUser(userId: Int): Cursor {
+    fun obtenerGruposDeUsuario(usuarioId: Int): Cursor {
         val db = this.readableDatabase
         return db.rawQuery(
-            "SELECT g.* FROM $TABLE_GROUPS g INNER JOIN $TABLE_USER_GROUPS ug ON g.$COL_GROUP_ID = ug.$COL_USER_GROUP_GROUP_ID WHERE ug.$COL_USER_GROUP_USER_ID = ?",
-            arrayOf(userId.toString())
+            "SELECT g.id, g.name, g.creator_id FROM ${DatabaseHelper.TABLE_GROUPS} g " +
+                    "INNER JOIN ${DatabaseHelper.TABLE_USER_GROUPS} ug ON g.id = ug.group_id " +
+                    "WHERE ug.user_id = ?",
+            arrayOf(usuarioId.toString())
         )
+    }
+
+    fun obtenerDeudaPorUsuarioYGrupo(userId: Int, groupId: Int): Double {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT $COL_USER_GROUP_DEBT FROM ${DatabaseHelper.TABLE_USER_GROUPS} WHERE user_id = ? AND group_id = ?",
+            arrayOf(userId.toString(), groupId.toString())
+        )
+        return if (cursor.moveToFirst()) {
+            cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_GROUP_DEBT))
+        } else {
+            0.0
+        }.also {
+            cursor.close()
+        }
     }
 }
 

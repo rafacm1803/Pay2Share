@@ -17,7 +17,8 @@ class HomeViewModel(private val usuarioRepository: UsuarioRepository) : ViewMode
         while (cursor.moveToNext()) {
             val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
             val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
-            listaGrupos.add(Group(id, name))
+            val creatorId = cursor.getInt(cursor.getColumnIndexOrThrow("creator_id"))
+            listaGrupos.add(Group(id, name, creatorId))
         }
         cursor.close()
         _grupos.value = listaGrupos

@@ -33,7 +33,7 @@ class CreateGroupActivity : AppCompatActivity() {
             val userId = sharedPreferences.getInt("user_id", -1)
 
             if (userId != -1) {
-                val groupId = grupoRepository.crearGrupo(groupName)
+                val groupId = grupoRepository.crearGrupo(groupName, userId)
                 usuarioRepository.anyadirUsuarioAGrupo(userId, groupId.toInt())
                 val intent = Intent(this, HomeFragment::class.java)
                 startActivity(intent)

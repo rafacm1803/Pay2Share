@@ -40,5 +40,50 @@
         android:id="@+id/buttonAddUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add User" />
+        android:text="Add User"
+        android:paddingBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextExpenseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Expense Name"
+        android:paddingBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextExpenseAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Expense Amount"
+        android:inputType="numberDecimal"
+        android:paddingBottom="16dp" />
+
+    <Button
+        android:id="@+id/buttonAddExpense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Expense"
+        android:paddingBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextDebtAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Debt Amount"
+        android:inputType="numberDecimal"
+        android:paddingBottom="16dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/buttonAssignDebt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Assign Debt"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/listViewParticipants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp" />
 </LinearLayout>
