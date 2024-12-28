@@ -395,5 +395,29 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             cursor.close()
         }
     }
+
+    fun increaseDebt(userId: Int, groupId: Int, amount: Double): Int {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COL_USER_GROUP_DEBT, amount)
+
+        return db.update(TABLE_USER_GROUPS, values, "$COL_USER_GROUP_USER_ID = ? AND $COL_USER_GROUP_GROUP_ID = ?", arrayOf(userId.toString(), groupId.toString()))
+    }
+
+    fun getNombreUsuarioPorId(userId: Int): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT name FROM $TABLE_USERS WHERE id = ?",
+            arrayOf(userId.toString())
+        )
+        return if (cursor.moveToFirst()) {
+            cursor.getString(cursor.getColumnIndexOrThrow("name"))
+        } else {
+            ""
+        }.also {
+            cursor.close()
+        }
+    }
+
 }
 

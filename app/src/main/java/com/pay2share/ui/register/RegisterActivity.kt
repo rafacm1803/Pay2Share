@@ -22,7 +22,8 @@ class RegisterActivity : AppCompatActivity() {
             val name = binding.editTextName.text.toString()
             val email = binding.editTextEmail.text.toString()
             usuarioRepository.crearUsuario(name, email)
-
+            android.widget.Toast.makeText(this, "Registrado con éxito", android.widget.Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 }

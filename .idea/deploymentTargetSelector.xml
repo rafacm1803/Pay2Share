@@ -2,12 +2,12 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
+      <SelectionState runConfigName="Pay2Share">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-26T16:15:53.778053200Z">
+        <DropdownSelection timestamp="2024-12-28T21:44:28.822949800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\rafac\.android\avd\Pixel_Telemed.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=YPEIHQWC79VWVWRG" />
             </handle>
           </Target>
         </DropdownSelection>

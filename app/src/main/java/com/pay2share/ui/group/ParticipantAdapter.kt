@@ -36,9 +36,9 @@ class ParticipantAdapter(private val context: Context, private val participants:
 
         textViewName.text = participant.name
         val debtText = if (participant.debt > 0) {
-            "<font color='#FF0000'>\$${participant.debt}</font>"
-        } else {
             "<font color='#00FF00'>\$${participant.debt}</font>"
+        } else {
+            "<font color='#FF0000'>\$${participant.debt}</font>"
         }
         textViewDebt.text = Html.fromHtml(debtText, Html.FROM_HTML_MODE_LEGACY)
         imageViewAvatar.setImageResource(R.drawable.ic_avatar) // Replace with your avatar drawable

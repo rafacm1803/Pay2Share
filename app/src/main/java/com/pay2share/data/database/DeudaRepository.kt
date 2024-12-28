@@ -39,4 +39,8 @@ class DeudaRepository (private val dbHelper: DatabaseHelper){
     fun obtenerTotalDeudaPorGrupo(groupId: Int): Double {
         return dbHelper.getTotalDebtForGroup(groupId)
     }
+
+    fun aumentarDeuda(userId: Int, groupId: Int, amount: Double): Int {
+        return dbHelper.increaseDebt(userId, groupId, amount)
+    }
 }
