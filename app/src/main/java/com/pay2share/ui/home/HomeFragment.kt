@@ -46,12 +46,6 @@ class HomeFragment : Fragment() {
 
         homeViewModel.cargarGrupos(userId)
 
-        val buttonAddGroup: Button = binding.buttonAddGroup
-        buttonAddGroup.setOnClickListener {
-            val intent = Intent(requireContext(), CreateGroupActivity::class.java)
-            startActivity(intent)
-        }
-
         return root
     }
 

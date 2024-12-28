@@ -1,5 +1,6 @@
 package com.pay2share
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -11,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.pay2share.databinding.ActivityMainBinding
+import com.pay2share.ui.group.CreateGroupActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,9 +32,8 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.toolbar.title = "Bienvenido, $userName"
 
         binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+            val intent = Intent(this, CreateGroupActivity::class.java)
+            startActivity(intent)
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
