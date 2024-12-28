@@ -1,6 +1,8 @@
+// filepath: /c:/Users/rafac/Desktop/UNI/EMPOTRADOS/Pay2Share/code/app/src/main/java/com/pay2share/ui/home/HomeFragment.kt
 package com.pay2share.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import com.pay2share.databinding.FragmentHomeBinding
 import com.pay2share.database.DatabaseHelper
 import com.pay2share.data.database.GrupoRepository
 import com.pay2share.data.database.UsuarioRepository
+import com.pay2share.ui.group.CreateGroupActivity
 
 class HomeFragment : Fragment() {
 
@@ -45,10 +48,8 @@ class HomeFragment : Fragment() {
 
         val buttonAddGroup: Button = binding.buttonAddGroup
         buttonAddGroup.setOnClickListener {
-            // Añadir un grupo y relacionarlo con el usuario de la sesión
-            val groupId = grupoRepository.crearGrupo("Nuevo Grupo")
-            usuarioRepository.anyadirUsuarioAGrupo(userId, groupId.toInt())
-            homeViewModel.cargarGrupos(userId) // Recargar los grupos
+            val intent = Intent(requireContext(), CreateGroupActivity::class.java)
+            startActivity(intent)
         }
 
         return root
