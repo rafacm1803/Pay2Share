@@ -1,10 +1,6 @@
 package com.pay2share.ui.group
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -48,34 +44,29 @@ class GroupDetailActivity : AppCompatActivity() {
             groupCursor.close()
 
             val participantsCursor = grupoRepository.obtenerParticipantesPorGrupo(groupId)
-            val participants = mutableListOf<String>()
-            val participantIds = mutableListOf<Int>()
+            val participants = mutableListOf<Participant>()
             while (participantsCursor.moveToNext()) {
                 val participantName = participantsCursor.getString(participantsCursor.getColumnIndexOrThrow("name"))
                 val participantId = participantsCursor.getInt(participantsCursor.getColumnIndexOrThrow("id"))
-                participants.add(participantName)
-                participantIds.add(participantId)
+                val debt = grupoRepository.obtenerDeudaPorUsuarioYGrupo(participantId, groupId)
+                participants.add(Participant(participantName, debt))
             }
             participantsCursor.close()
-            binding.textParticipants.text = participants.joinToString("\n")
 
             val totalDebt = grupoRepository.obtenerTotalDeudaPorGrupo(groupId)
             binding.textTotalDebt.text = totalDebt.toString()
 
             val listViewParticipants: ListView = findViewById(R.id.listViewParticipants)
-            val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, participants)
+            val adapter = ParticipantAdapter(this, participants)
             listViewParticipants.adapter = adapter
-
-            listViewParticipants.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                val intent = Intent(this, UserDetailActivity::class.java)
-                intent.putExtra("USER_ID", participantIds[position])
-                intent.putExtra("GROUP_ID", groupId)
-                startActivity(intent)
-            }
         }
 
         binding.buttonAddUser.setOnClickListener {
             val email = binding.editTextEmail.text.toString()
+            if (email.isEmpty()) {
+                binding.editTextEmail.error = "Email is required"
+                return@setOnClickListener
+            }
             val userCursor = usuarioRepository.obtenerUsuarioPorEmail(email)
             if (userCursor != null && userCursor.moveToFirst()) {
                 val userId = userCursor.getInt(userCursor.getColumnIndexOrThrow("id"))
@@ -90,36 +81,17 @@ class GroupDetailActivity : AppCompatActivity() {
         binding.buttonAddExpense.setOnClickListener {
             val expenseName = binding.editTextExpenseName.text.toString()
             val expenseAmount = binding.editTextExpenseAmount.text.toString().toDoubleOrNull()
-            if (expenseName.isNotEmpty() && expenseAmount != null) {
-                val date = System.currentTimeMillis().toString() // You can format this as needed
-                gastoRepository.crearGasto(expenseName, expenseAmount, date, userId.toString(), groupId)
-                Toast.makeText(this, "Expense added to group", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Invalid expense details", Toast.LENGTH_SHORT).show()
+            if (expenseName.isEmpty()) {
+                binding.editTextExpenseName.error = "Expense name is required"
+                return@setOnClickListener
             }
-        }
-
-        if (isCreator) {
-            binding.editTextDebtAmount.visibility = View.VISIBLE
-            binding.buttonAssignDebt.visibility = View.VISIBLE
-
-            binding.buttonAssignDebt.setOnClickListener {
-                val debtAmount = binding.editTextDebtAmount.text.toString().toDoubleOrNull()
-                if (debtAmount != null) {
-                    val email = binding.editTextEmail.text.toString()
-                    val userCursor = usuarioRepository.obtenerUsuarioPorEmail(email)
-                    if (userCursor != null && userCursor.moveToFirst()) {
-                        val userId = userCursor.getInt(userCursor.getColumnIndexOrThrow("id"))
-                        grupoRepository.asignarDeudaAGrupo(userId, groupId, debtAmount)
-                        Toast.makeText(this, "Debt assigned to user", Toast.LENGTH_SHORT).show()
-                        userCursor.close()
-                    } else {
-                        Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(this, "Invalid debt amount", Toast.LENGTH_SHORT).show()
-                }
+            if (expenseAmount == null) {
+                binding.editTextExpenseAmount.error = "Valid expense amount is required"
+                return@setOnClickListener
             }
+            val date = System.currentTimeMillis().toString() // You can format this as needed
+            gastoRepository.crearGasto(expenseName, expenseAmount, date, userId.toString(), groupId)
+            Toast.makeText(this, "Expense added to group", Toast.LENGTH_SHORT).show()
         }
     }
 }
