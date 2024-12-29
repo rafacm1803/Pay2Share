@@ -1,23 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editTextText3"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="?attr/colorPrimary"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Pay2Share"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        />
+
 
     <TextView
         android:id="@+id/textParticipantName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Participant Name"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
 
     <TextView
-        android:id="@+id/textParticipantEmail"
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gastos añadidos"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/textViewUserExpenses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Participant Email"
-        android:layout_marginTop="8dp" />
+        android:textSize="20sp"
+        android:text="Participant Gasto"
+        android:textColor="@color/black"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
 </LinearLayout>

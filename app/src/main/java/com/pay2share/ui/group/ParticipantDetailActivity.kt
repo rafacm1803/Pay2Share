@@ -25,6 +25,8 @@ class ParticipantDetailActivity : AppCompatActivity() {
 
         // Obtén el ID del participante del Intent
         val participantId = intent.getIntExtra("PARTICIPANT_ID", -1)
+        val groupId = intent.getIntExtra("GROUP_ID", -1)
+        val gastoRepository = GastoRepository(dbHelper)
 
         if (participantId != -1) {
             val participantCursor = usuarioRepository.obtenerUsuarioPorId(participantId)
@@ -34,10 +36,26 @@ class ParticipantDetailActivity : AppCompatActivity() {
 
                 // Muestra los datos en el layout
                 findViewById<TextView>(R.id.textParticipantName).text = name
-                findViewById<TextView>(R.id.textParticipantEmail).text = email
 
                 participantCursor.close()
             }
+        }
+
+        if (groupId != -1 && participantId != -1) {
+            val expensesCursor = gastoRepository.obtenerGastosPorGrupo(groupId)
+            val userExpenses = mutableListOf<String>()
+            while (expensesCursor.moveToNext()) {
+                val payer = expensesCursor.getString(expensesCursor.getColumnIndexOrThrow("payer"))
+                if (payer == participantId.toString()) {
+                    val expenseName = expensesCursor.getString(expensesCursor.getColumnIndexOrThrow("name"))
+                    val expenseAmount = expensesCursor.getDouble(expensesCursor.getColumnIndexOrThrow("amount"))
+                    userExpenses.add("$expenseName: $$expenseAmount")
+                }
+            }
+            expensesCursor.close()
+
+            // Muestra los gastos en un TextView (debes tener un TextView con este id en tu layout)
+            findViewById<TextView>(R.id.textViewUserExpenses).text = userExpenses.joinToString("\n")
         }
     }
 }
