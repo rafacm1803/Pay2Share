@@ -432,5 +432,15 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }.also {
         }
     }
+
+    fun getDebtsByGroup(groupId: Int): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT payer, amount, participants FROM expenses WHERE group_id = ?", arrayOf(groupId.toString()))
+    }
+
+    fun getDebtsByUser(userId: Int): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT g.name as group_name, SUM(e.amount) as amount FROM expenses e JOIN groups g ON e.group_id = g.id WHERE e.payer = ? GROUP BY g.name", arrayOf(userId.toString()))
+    }
 }
 

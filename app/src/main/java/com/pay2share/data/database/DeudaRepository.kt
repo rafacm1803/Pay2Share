@@ -43,4 +43,12 @@ class DeudaRepository (private val dbHelper: DatabaseHelper){
     fun aumentarDeuda(userId: Int, groupId: Int, amount: Double): Int {
         return dbHelper.increaseDebt(userId, groupId, amount)
     }
+
+    fun obtenerDeudasPorUsuario(userId: Int): Cursor {
+        return dbHelper.getDebtsByUser(userId)
+    }
+
+    fun obtenerDeudasPorGrupo(groupId: Int): Cursor {
+        return dbHelper.getDebtsByGroup(groupId)
+    }
 }
