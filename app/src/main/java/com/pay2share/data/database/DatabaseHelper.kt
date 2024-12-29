@@ -11,7 +11,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "Pay2Share.db"
-        private const val DATABASE_VERSION = 4
+        private const val DATABASE_VERSION = 5
 
         // Tablas
         const val TABLE_GROUPS = "groups"
@@ -43,6 +43,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COL_DEBT_CREDITOR = "creditor"
         const val COL_DEBT_DEBTOR = "debtor"
         const val COL_DEBT_AMOUNT = "amount"
+        const val COL_DEBT_GROUP_ID = "group_id"
 
         // Columnas - User Groups
         const val COL_USER_GROUP_USER_ID = "user_id"
@@ -90,7 +91,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 $COL_DEBT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COL_DEBT_CREDITOR TEXT NOT NULL,
                 $COL_DEBT_DEBTOR TEXT NOT NULL,
-                $COL_DEBT_AMOUNT REAL NOT NULL
+                $COL_DEBT_AMOUNT REAL NOT NULL,
+                $COL_DEBT_GROUP_ID INTEGER
             )
         """.trimIndent()
 
@@ -206,12 +208,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     //Insertar deuda
-    fun insertDebt(creditor: String, debtor: String, amount: Double): Long {
+    fun insertDebt(creditor: String, debtor: String, amount: Double, group_id: Int): Long {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COL_DEBT_CREDITOR, creditor)
         values.put(COL_DEBT_DEBTOR, debtor)
         values.put(COL_DEBT_AMOUNT, amount)
+        values.put(COL_DEBT_GROUP_ID, group_id)
 
         return db.insert(TABLE_DEBTS, null, values)
     }
@@ -440,7 +443,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     fun getDebtsByUser(userId: Int): Cursor {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT g.name as group_name, SUM(e.amount) as amount FROM expenses e JOIN groups g ON e.group_id = g.id WHERE e.payer = ? GROUP BY g.name", arrayOf(userId.toString()))
+        val userName = getNombreUsuarioPorId(userId)
+        return db.rawQuery("SELECT g.name as group_name, SUM(d.amount) as amount FROM debts d JOIN groups g ON d.group_id = g.id WHERE d.debtor = ? GROUP BY g.name", arrayOf(userName))
     }
 }
 

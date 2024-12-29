@@ -133,7 +133,7 @@ class GroupDetailActivity : AppCompatActivity() {
                     deudaRepository.aumentarDeuda(userId, groupId, debt + (expenseAmount / participantsCursor.count) * (participantsCursor.count - 1) )
                 } else {
                     val nombreDeudor = usuarioRepository.obtenerNombreUsuarioPorId(participantId) ?: "N/A"
-                    deudaRepository.crearDeuda(nombreCreador, nombreDeudor, debt - expenseAmount / participantsCursor.count)
+                    deudaRepository.crearDeuda(nombreCreador, nombreDeudor, debt - expenseAmount / participantsCursor.count, groupId)
                     deudaRepository.aumentarDeuda(participantId, groupId, debt - expenseAmount / participantsCursor.count)
                 }
             }

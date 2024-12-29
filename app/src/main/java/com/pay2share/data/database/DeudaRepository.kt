@@ -5,8 +5,8 @@ import com.pay2share.database.DatabaseHelper
 
 class DeudaRepository (private val dbHelper: DatabaseHelper){
 
-    fun crearDeuda(creditor: String, debtor: String, amount: Double): Long {
-        return dbHelper.insertDebt(creditor, debtor, amount)
+    fun crearDeuda(creditor: String, debtor: String, amount: Double, groupId: Int): Long {
+        return dbHelper.insertDebt(creditor, debtor, amount, groupId)
     }
 
     fun obtenerDeudasPorCredor(creditor: String): Cursor {
