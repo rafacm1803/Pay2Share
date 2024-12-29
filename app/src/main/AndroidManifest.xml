@@ -54,6 +54,10 @@
             android:theme="@style/Theme.Pay2Share.NoActionBar">
         </activity>
 
+        <activity android:name=".ui.group.ParticipantDetailActivity" />
+
+
+
     </application>
 
 </manifest>
