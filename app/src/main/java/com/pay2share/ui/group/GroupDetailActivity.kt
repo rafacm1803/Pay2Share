@@ -6,7 +6,6 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pay2share.R
-import com.pay2share.ui.group.Participant
 import com.pay2share.databinding.ActivityGroupDetailBinding
 import com.pay2share.database.DatabaseHelper
 import com.pay2share.data.database.GrupoRepository
@@ -60,7 +59,6 @@ class GroupDetailActivity : AppCompatActivity() {
             participantsCursor.close()
 
             val totalDebt = grupoRepository.obtenerTotalDeudaPorGrupo(groupId)
-            binding.textTotalDebt.text = totalDebt.toString()
 
             val listViewParticipants: ListView = findViewById(R.id.listViewParticipants)
             val adapter = ParticipantAdapter(this, participants)
@@ -99,7 +97,7 @@ class GroupDetailActivity : AppCompatActivity() {
                 }
                 participantsCursor.close()
 
-                binding.textTotalDebt.text = grupoRepository.obtenerTotalDeudaPorGrupo(groupId).toString()
+
                 val listViewParticipants: ListView = findViewById(R.id.listViewParticipants)
                 val adapter = ParticipantAdapter(this, participants)
                 listViewParticipants.adapter = adapter
@@ -139,6 +137,12 @@ class GroupDetailActivity : AppCompatActivity() {
             }
             Toast.makeText(this, "Expense added to group", Toast.LENGTH_SHORT).show()
             recreate()
+        }
+
+        binding.button.setOnClickListener {
+            val intent = Intent(this, ResumenActivity::class.java)
+            intent.putExtra("GROUP_ID", groupId)
+            startActivity(intent)
         }
     }
 }

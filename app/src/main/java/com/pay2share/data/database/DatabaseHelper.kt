@@ -478,5 +478,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = writableDatabase
         return db.delete(TABLE_CONTACTS, "$COL_CONTACT_USER_ID = ? AND $COL_CONTACT_EMAIL = ?", arrayOf(userId.toString(), email))
     }
+    fun getUsersWithPositiveDebt(groupId: Int): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT * FROM $TABLE_USER_GROUPS WHERE $COL_USER_GROUP_DEBT > 0 AND $COL_USER_GROUP_GROUP_ID = ? ORDER BY $COL_USER_GROUP_DEBT ASC", arrayOf(groupId.toString()))
+    }
+
+    fun getUsersWithNegativeDebt(groupId: Int): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT * FROM $TABLE_USER_GROUPS WHERE $COL_USER_GROUP_DEBT < 0 AND $COL_USER_GROUP_GROUP_ID = ? ORDER BY $COL_USER_GROUP_DEBT ASC", arrayOf(groupId.toString()))
+    }
+
+
 }
 

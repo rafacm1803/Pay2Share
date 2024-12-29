@@ -58,6 +58,11 @@
             android:name=".ui.participant.ParticipantDetailActivity"
             android:exported="true"
             android:theme="@style/Theme.Pay2Share.NoActionBar" />
+            
+        <activity
+            android:name=".ui.group.ResumenActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Pay2Share.NoActionBar" />
 
         <activity android:name=".ui.slideshow.AddContactActivity"
             android:exported="true" />

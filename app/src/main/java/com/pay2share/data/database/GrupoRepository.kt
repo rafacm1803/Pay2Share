@@ -45,4 +45,23 @@ class GrupoRepository(private val dbHelper: DatabaseHelper) {
     fun obtenerDeudaPorUsuarioYGrupo(userId: Int, groupId: Int): Double {
         return dbHelper.obtenerDeudaPorUsuarioYGrupo(userId, groupId)
     }
+
+    fun obtenerParticipantesConDeudaPositiva(groupId: Int): Cursor {
+        return dbHelper.getUsersWithPositiveDebt(groupId)
+    }
+
+    fun obtenerParticipantesConDeudaNegativa(groupId: Int): Cursor {
+        return dbHelper.getUsersWithNegativeDebt(groupId)
+    }
+
+    fun actualizarDeuda(userId: Int, groupId:Int, deuda: Double){
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put("debt", deuda)
+        }        
+        db.update(DatabaseHelper.TABLE_USER_GROUPS, values, "user_id = ? AND group_id = ?", arrayOf(userId.toString(), groupId.toString()))
+
+    }
+
+
 }
