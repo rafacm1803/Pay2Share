@@ -419,5 +419,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
     }
 
+    fun getIdUsuarioPorNombre(nombre: String): Int? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT id FROM $TABLE_USERS WHERE name = ?",
+            arrayOf(nombre)
+        )
+        return if (cursor.moveToFirst()) {
+            cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+        } else {
+            null
+        }.also {
+        }
+    }
 }
 

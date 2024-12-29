@@ -1,4 +1,4 @@
-/*package com.pay2share.ui.participant
+package com.pay2share.ui.participant
 
 import android.os.Bundle
 import android.widget.TextView
@@ -41,4 +41,3 @@ class ParticipantDetailActivity : AppCompatActivity() {
         }
     }
 }
-*/

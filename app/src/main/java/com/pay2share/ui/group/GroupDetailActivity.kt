@@ -6,13 +6,14 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pay2share.R
-//import com.pay2share.ui.group.ParticipantDetailActivity
+import com.pay2share.ui.group.Participant
 import com.pay2share.databinding.ActivityGroupDetailBinding
 import com.pay2share.database.DatabaseHelper
 import com.pay2share.data.database.GrupoRepository
 import com.pay2share.data.database.UsuarioRepository
 import com.pay2share.data.database.GastoRepository
 import com.pay2share.data.database.DeudaRepository
+import com.pay2share.ui.participant.ParticipantDetailActivity
 
 class GroupDetailActivity : AppCompatActivity() {
 
@@ -64,14 +65,15 @@ class GroupDetailActivity : AppCompatActivity() {
             val listViewParticipants: ListView = findViewById(R.id.listViewParticipants)
             val adapter = ParticipantAdapter(this, participants)
             listViewParticipants.adapter = adapter
-            /*
+
             listViewParticipants.setOnItemClickListener { _, _, position, _ ->
                 val selectedParticipant = participants[position] // Obtén el participante seleccionado
                 val intent = Intent(this, ParticipantDetailActivity::class.java)
-                intent.putExtra("PARTICIPANT_ID", selectedParticipant.id) // Pasa el ID del participante
+                val partId = usuarioRepository.obtenerIdUsuarioPorNombre(selectedParticipant.name)
+                intent.putExtra("PARTICIPANT_ID", partId) // Pasa el ID del participante
                 intent.putExtra("GROUP_ID", groupId) // Opcional, si necesitas datos del grupo
                 startActivity(intent)
-            }*/
+            }
         }
 
         binding.buttonAddUser.setOnClickListener {

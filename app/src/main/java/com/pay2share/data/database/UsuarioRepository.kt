@@ -43,4 +43,8 @@ class UsuarioRepository (private val dbHelper: DatabaseHelper){
     fun obtenerNombreUsuarioPorId(usuarioId: Int): String? {
         return dbHelper.getNombreUsuarioPorId(usuarioId)
     }
+
+    fun obtenerIdUsuarioPorNombre(nombre: String): Int? {
+        return dbHelper.getIdUsuarioPorNombre(nombre)
+    }
 }
