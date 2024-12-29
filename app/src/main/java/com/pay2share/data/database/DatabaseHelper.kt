@@ -11,7 +11,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "Pay2Share.db"
-        private const val DATABASE_VERSION = 5
+        private const val DATABASE_VERSION = 6
 
         // Tablas
         const val TABLE_GROUPS = "groups"
@@ -19,6 +19,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val TABLE_USERS = "users"
         const val TABLE_DEBTS = "debts"
         const val TABLE_USER_GROUPS = "user_groups"
+        const val TABLE_CONTACTS = "contacts"
+
+        // Columnas - Contacts
+        const val COL_CONTACT_ID = "id"
+        const val COL_CONTACT_USER_ID = "user_id"
+        const val COL_CONTACT_EMAIL = "email"
 
         // Columnas - Groups
         const val COL_GROUP_ID = "id"
@@ -54,6 +60,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
 
     override fun onCreate(db: SQLiteDatabase) {
+        // Crear tabla de contactos
+        val createContactsTable = """
+            CREATE TABLE $TABLE_CONTACTS (
+                $COL_CONTACT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COL_CONTACT_USER_ID INTEGER NOT NULL,
+                $COL_CONTACT_EMAIL TEXT NOT NULL,
+                FOREIGN KEY($COL_CONTACT_USER_ID) REFERENCES $TABLE_USERS($COL_USER_ID)
+            )
+        """.trimIndent()
+
         // Crear tabla de grupos
         val createGroupsTable = """
             CREATE TABLE $TABLE_GROUPS (
@@ -107,6 +123,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             )
         """.trimIndent()
 
+        db.execSQL(createContactsTable)
         db.execSQL(createGroupsTable)
         db.execSQL(createExpensesTable)
         db.execSQL(createUsersTable)
@@ -122,6 +139,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_DEBTS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER_GROUPS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_CONTACTS")
 
         // Recreamos las tables
         onCreate(db)
@@ -445,6 +463,20 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.readableDatabase
         val userName = getNombreUsuarioPorId(userId)
         return db.rawQuery("SELECT g.name as group_name, SUM(d.amount) as amount FROM debts d JOIN groups g ON d.group_id = g.id WHERE d.debtor = ? GROUP BY g.name", arrayOf(userName))
+    }
+
+    fun insertContact(userId: Int, email: String): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COL_CONTACT_USER_ID, userId)
+            put(COL_CONTACT_EMAIL, email)
+        }
+        return db.insert(TABLE_CONTACTS, null, values)
+    }
+
+    fun deleteContact(userId: Int, email: String): Int {
+        val db = writableDatabase
+        return db.delete(TABLE_CONTACTS, "$COL_CONTACT_USER_ID = ? AND $COL_CONTACT_EMAIL = ?", arrayOf(userId.toString(), email))
     }
 }
 
