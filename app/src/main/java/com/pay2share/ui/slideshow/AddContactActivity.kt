@@ -33,6 +33,20 @@ class AddContactActivity : AppCompatActivity() {
 
             val sharedPreferences = getSharedPreferences("user_session", Context.MODE_PRIVATE)
             val userId = sharedPreferences.getInt("user_id", -1)
+            val userEmail = sharedPreferences.getString("user_email", "")
+
+            // Verificar si el correo es el mismo que el del usuario
+            if (email == userEmail) {
+                Toast.makeText(this, "No puedes añadir tu propio correo como contacto", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Verificar si el contacto ya existe
+            val existingContacts = contactRepository.getContactsByUser(userId)
+            if (existingContacts.contains(email)) {
+                Toast.makeText(this, "Este contacto ya existe", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             contactRepository.addContact(userId, email)
             Toast.makeText(this, "Contacto añadido", Toast.LENGTH_SHORT).show()
