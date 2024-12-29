@@ -10,7 +10,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.pay2share.databinding.ActivityMainBinding
 import com.pay2share.ui.group.CreateGroupActivity
 
@@ -31,10 +30,6 @@ class MainActivity : AppCompatActivity() {
         val userName = sharedPreferences.getString("user_name", "Usuario")
         binding.appBarMain.toolbar.title = "Bienvenido, $userName"
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            val intent = Intent(this, CreateGroupActivity::class.java)
-            startActivity(intent)
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -44,6 +39,18 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.nav_home) {
+                binding.appBarMain.fab.show()
+                binding.appBarMain.fab.setOnClickListener {
+                    val intent = Intent(this, CreateGroupActivity::class.java)
+                    startActivity(intent)
+                }
+            } else {
+                binding.appBarMain.fab.hide()
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
