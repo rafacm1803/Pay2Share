@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
     <EditText
         android:id="@+id/editTextText3"
@@ -13,38 +12,36 @@
         android:background="?attr/colorPrimary"
         android:ems="10"
         android:inputType="text"
-        android:text="Pay2Share"
+        android:text="@string/app_name"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textStyle="bold" />
-
-
 
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre"
+        android:hint="@string/name"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp" />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp" />
 
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:text="Registrarse"
-        android:layout_margin="16dp"/>
+        android:text="@string/register"
+        android:layout_margin="16dp" />
 
 </LinearLayout>

@@ -10,7 +10,7 @@
         android:id="@+id/textViewTotalDebt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deuda Total: $0.00"
+        android:text="@string/total_debt"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"

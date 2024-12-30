@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Pay2Share</string>
+    <string name="navigation_drawer_open">Abrir el menú de navegación</string>
+    <string name="navigation_drawer_close">Cerrar el menú de navegación</string>
+    <string name="nav_header_title">¡Bienvenido!</string>
+    <string name="nav_header_subtitle">¿Pagamos?</string>
+    <string name="nav_header_desc">Encabezado de navegación</string>
+    <string name="action_settings">Configuración</string>
+    <string name="menu_home">Mis Grupos</string>
+    <string name="menu_gallery">Mis Deudas</string>
+    <string name="menu_slideshow">Contactos</string>
+    <string name="login">Entrar</string>
+    <string name="register">Registrarse</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="add_contact">Agregar Contacto</string>
+    <string name="contact_exists">Este contacto ya existe</string>
+    <string name="cannot_add_own_email">No puedes añadir tu propio correo como contacto</string>
+    <string name="contact_added">Contacto añadido</string>
+    <string name="enter_email">Por favor, introduce un email</string>
+    <string name="email_registered">Este email ya está registrado</string>
+    <string name="registered_successfully">Registrado con éxito</string>
+    <string name="enter_group_name">Introduce el nombre del grupo</string>
+    <string name="create_group">Crear Grupo</string>
+    <string name="change_language">Cambiar Idioma</string>
+    <string name="name">Nombre</string>
+    <string name="delete_contact">Eliminar</string>
+    <string name="total_debt">Deuda Total: $0.00</string>
+    <string name="settle_accounts">¡Hora del ajuste de cuentas!</string>
+    <string name="participants_group">Participantes</string>
+    <string name="addUser">Añadir usuario</string>
+    <string name="addExpense">Añadir gasto</string>
+    <string name="summary">Ir al resumen</string>
+    <string name="expenseDescription">Descripción del gasto</string>
+    <string name="moneySpent">Dinero gastado</string>
+    <string name="addedExpenses">Gastos añadidos</string>
+    <string name="payment_message">%1$s tiene que pagar $%2$s a %3$s</string>
+
+
+</resources>

@@ -10,7 +10,7 @@
         android:id="@+id/editTextContactEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email del contacto"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:layout_marginBottom="16dp" />
 
@@ -18,5 +18,5 @@
         android:id="@+id/buttonAddContact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Agregar Contacto" />
+        android:text="@string/add_contact" />
 </LinearLayout>

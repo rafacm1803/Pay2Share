@@ -8,15 +8,6 @@
     android:paddingTop="48dp"
     tools:context=".ui.group.GroupDetailActivity">
 
-    <!-- Encabezado destacado -->
-
-
-    <!-- Balance general -->
-
-    <!-- Lista de participantes -->
-
-    <!-- Separador visual -->
-
     <TextView
         android:id="@+id/textGroupName"
         android:layout_width="wrap_content"
@@ -54,7 +45,7 @@
         android:layout_marginBottom="12dp"
         android:background="@drawable/button_background"
         android:paddingBottom="8dp"
-        android:text="Añadir Usuario"
+        android:text="@string/addUser"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +71,7 @@
         android:layout_marginBottom="64dp"
         android:background="@drawable/button_background"
         android:paddingBottom="8dp"
-        android:text="Añadir Gasto"
+        android:text="@string/addExpense"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:hint="ejemplo@mail.com"
+        android:hint="example@mail.com"
         android:inputType="textEmailAddress"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/buttonAddUser"
@@ -116,7 +107,7 @@
         android:id="@+id/editTextExpenseAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Dinero gastado..."
+        android:hint="@string/moneySpent"
         android:inputType="numberDecimal"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/buttonAddExpense"
@@ -128,24 +119,18 @@
         android:id="@+id/editTextExpenseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Descripcion del gasto..."
+        android:hint="@string/expenseDescription"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/editTextExpenseAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Campo de correo electrónico del usuario -->
-
-    <!-- Separador visual -->
-
-    <!-- Campos de entrada de gastos -->
-
     <TextView
         android:id="@+id/textParticipants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Participantes"
+        android:text="@string/participants_group"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/textGroupName"
         app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +144,7 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/button_background"
         android:paddingBottom="8dp"
-        android:text="Ir a resumen"
+        android:text="@string/summary"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

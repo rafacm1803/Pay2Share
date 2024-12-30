@@ -11,6 +11,7 @@ import com.pay2share.data.database.GrupoRepository
 import com.pay2share.data.database.UsuarioRepository
 import com.pay2share.data.database.GastoRepository
 import com.pay2share.data.database.DeudaRepository
+import java.util.Locale
 
 class ResumenActivity : AppCompatActivity() {
 
@@ -26,6 +27,7 @@ class ResumenActivity : AppCompatActivity() {
         usuarioRepository = UsuarioRepository(dbHelper) // Inicializa usuarioRepository
 
         val textViewPagos = findViewById<TextView>(R.id.textViewPagos) // TextView para mostrar los pagos
+        val currentLanguage = Locale.getDefault().language
     
         val groupId = intent.getIntExtra("GROUP_ID", -1)
     
@@ -48,6 +50,7 @@ class ResumenActivity : AppCompatActivity() {
                 while (deudaPositiva > 0 && deudaNegativa < 0) {
                     val ajuste = minOf(deudaPositiva, -deudaNegativa)
 
+
                     Log.d("DEBUG", "1 deudaP es: $deudaPositiva y deudaN es: $deudaNegativa")
 
                     // Ajustar las deudas
@@ -57,7 +60,13 @@ class ResumenActivity : AppCompatActivity() {
                     Log.d("DEBUG", "2 deudaP es: $deudaPositiva y deudaN es: $deudaNegativa")
 
                     // Guardar el mensaje en la lista
-                    pagosList.add("$userNameNegativo tiene que pagar $$ajuste a $userNamePositivo")
+                    if (currentLanguage == "es") {
+                        pagosList.add(getString(R.string.payment_message, userNameNegativo, ajuste, userNamePositivo))
+                    } else {
+                        pagosList.add(getString(R.string.payment_message, userNameNegativo, ajuste, userNamePositivo))
+                    }
+
+
 
                     // Verificar si se deben mover los cursores
                     if (deudaPositiva == 0.0) {
@@ -66,7 +75,7 @@ class ResumenActivity : AppCompatActivity() {
                             // Re-obtenemos el nombre actualizado para el siguiente iteración
                             userNamePositivo = usuarioRepository.obtenerNombreUsuarioPorId(positivoCursor.getInt(positivoCursor.getColumnIndexOrThrow("user_id")))
                         } else {
-                            break // No hay más positivos
+                            break
                         }
                     }
 
@@ -85,7 +94,7 @@ class ResumenActivity : AppCompatActivity() {
 
 
         // Mostrar la lista de pagos en el TextView
-        textViewPagos.text = pagosList.joinToString("\n") // Unir los mensajes con saltos de línea
+        textViewPagos.text = pagosList.joinToString("\n")
     }
     
 
