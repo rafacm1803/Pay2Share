@@ -25,7 +25,7 @@
     <string name="change_language">Change Language</string>
     <string name="name">Name</string>
     <string name="delete_contact">Delete</string>
-    <string name="total_debt">Total Debt: $0.00</string>
+    <string name="total_debt">Total Debt: $%1$s</string>
     <string name="settle_accounts">Time to settle accounts!</string>
     <string name="participants_group">Participants</string>
     <string name="addUser">Add user</string>

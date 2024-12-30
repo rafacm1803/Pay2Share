@@ -13,6 +13,7 @@ import com.pay2share.R
 import com.pay2share.data.database.DeudaRepository
 import com.pay2share.database.DatabaseHelper
 import com.pay2share.databinding.FragmentGalleryBinding
+import java.util.Locale
 
 data class GroupDebt(val groupName: String, val amount: Double)
 
@@ -43,7 +44,10 @@ class GalleryFragment : Fragment() {
         if (userId != -1) {
             val groupDebts = calculateGroupDebts(userId)
             val totalDebt = groupDebts.sumOf { it.amount }
-            textViewTotalDebt.text = "Deuda Total: $${totalDebt}"
+
+            val cantidadFormateada = String.format(Locale.getDefault(), "%.2f", totalDebt)
+
+            textViewTotalDebt.text = getString(R.string.total_debt, cantidadFormateada)
 
             val adapter = GroupDebtAdapter(requireContext(), groupDebts)
             listViewGroupDebts.adapter = adapter

@@ -51,19 +51,18 @@ class ResumenActivity : AppCompatActivity() {
                     val ajuste = minOf(deudaPositiva, -deudaNegativa)
 
 
-                    Log.d("DEBUG", "1 deudaP es: $deudaPositiva y deudaN es: $deudaNegativa")
-
                     // Ajustar las deudas
                     deudaPositiva -= ajuste
                     deudaNegativa += ajuste
 
-                    Log.d("DEBUG", "2 deudaP es: $deudaPositiva y deudaN es: $deudaNegativa")
+
+                    val cantidadFormateada = String.format(Locale.getDefault(), "%.2f", ajuste)
 
                     // Guardar el mensaje en la lista
                     if (currentLanguage == "es") {
-                        pagosList.add(getString(R.string.payment_message, userNameNegativo, ajuste, userNamePositivo))
+                        pagosList.add(getString(R.string.payment_message, userNameNegativo, cantidadFormateada, userNamePositivo))
                     } else {
-                        pagosList.add(getString(R.string.payment_message, userNameNegativo, ajuste, userNamePositivo))
+                        pagosList.add(getString(R.string.payment_message, userNameNegativo, cantidadFormateada, userNamePositivo))
                     }
 
 
